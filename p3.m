@@ -27,4 +27,5 @@ for i = 2:matSize(1,1)
     end
 end
 
-scatter3(xCoords, tCoords, mCoords);
+%scatter3(xCoords, tCoords, mCoords);
+mesh(cur);
