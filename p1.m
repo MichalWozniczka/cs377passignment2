@@ -1,13 +1,8 @@
 A = [3, -4; 1, 2];
 y = [-1; 3];
+x = [0; 0];
 
-deft = input('Use default matrix? y/n:\n', 's');
 type = input('Use Jacobi iteration or Gauss-Seidel method? j/g:\n', 's');
-
-if deft == 'n'
-    A = input('Enter matrix A:\n');
-    y = input('Enter vector y:\n');
-end
 
 iters = input('Num of iterations:\n');
 disp(A);
@@ -34,7 +29,6 @@ if type == 'j'
         xPoints = [xPoints; xcur(1, 1)];
         yPoints = [yPoints; xcur(2, 1)];
         iPoints = [iPoints; i];
-	fprintf('%.2f, %.2f\n', xcur(1, 1), xcur(2, 1));
     end
 end
 
@@ -55,11 +49,10 @@ if type == 'g'
         xPoints = [xPoints; xcur(1, 1)];
         yPoints = [yPoints; xcur(2, 1)];
         iPoints = [iPoints; i];
-	fprintf('%.2f, %.2f\n', xcur(1, 1), xcur(2, 1));
     end
 end
 
 	        
 
-disp(x);
+disp(xcur);
 scatter3(xPoints, yPoints, iPoints);
