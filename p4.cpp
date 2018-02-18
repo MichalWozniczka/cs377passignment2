@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <sstream>
 #include <ctime>
+#include <cmath>
 
 using namespace std;
 
@@ -14,6 +15,7 @@ clock_t tend;
 struct Pair {
 	int x;
 	int y;
+	double w;
 
 	Pair() {
 	}
@@ -21,6 +23,12 @@ struct Pair {
 	Pair(int _x, int _y) {
 		x = _x;
 		y = _y;
+	}
+
+	Pair(int _x, int _y, double _w) {
+		x = _x;
+		y = _y;
+		w = _w;
 	}
 };
 
@@ -110,12 +118,12 @@ struct CSR {
 				rp.push_back(ci.size());
 			}
 			ci.push_back(pairs.at(i).y);
+			va.push_back(pairs.at(i).w);
 		}
 		while(rp.size() < outgoing.size() && outgoing.at(rp.size()) == false) {
 			rp.push_back(ci.size());
 		}
 		rp.push_back(ci.size());
-		va = vector<double>(ci.size());
 		la = vector<double>(outgoing.size());
 		laNxt = la;
 	}
@@ -129,10 +137,8 @@ struct CSR {
 
 		for(int i = 0; i < rp.size()-1; i++) {
 			for(int j = rp.at(i); j < rp.at(i+1); j++) {
-				pairs.push_back(Pair(ci.at(j), i));
+				pairs.push_back(Pair(ci.at(j), i, va.at(j)));
 				outgoing.at(ci.at(j)) = true;
-			}
-			if(rp.at(i) == rp.at(i+1)) {
 			}
 		}
 		
@@ -149,12 +155,11 @@ struct CSR {
 				new_rp.push_back(new_ci.size());
 			}
 			new_ci.push_back(pairs.at(i).y);
+			new_va.push_back(pairs.at(i).w);
 		}
 		while(new_rp.size() < rp.size() && outgoing.at(new_rp.size()) == false) {
 			new_rp.push_back(new_ci.size());
 		}
-		new_va = vector<double>(new_ci.size());
-
 
 		return CSR(new_rp, new_ci, new_va);
 	}
@@ -237,7 +242,7 @@ vector<CSR> dimacs_to_csr_and_transpose(ifstream& file) {
 					int y = stoi(tokens.at(2));
 					int w = stoi(tokens.at(3));
 					//matrix.at(x-1).at(y-1) = w;
-					pairs.push_back(Pair(x-1, y-1));
+					pairs.push_back(Pair(x-1, y-1, w));
 					outgoing.at(x-1) = true;
 					break;
 			}
